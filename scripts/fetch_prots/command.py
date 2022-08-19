@@ -93,7 +93,10 @@ def fetch_prots(assembly_file: FileIO,
             if not skip_renaming:
                 sequence = re.sub(r'\[.+]\n', f'[{name}]\n', sequence)
 
-            with open(f'{output_dir}/{name}.faa', 'w') as f:
+            sanitized = name.translate(
+                str.maketrans({"\0": "", "\\": "_", "/": "_"})
+            )
+            with open(f'{output_dir}/{sanitized}.faa', 'w') as f:
                 f.write(sequence)
 
     if not skip_statistics:
