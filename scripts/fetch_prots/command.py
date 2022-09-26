@@ -71,6 +71,8 @@ def fetch_prots(assembly_file: FileIO,
             if species['Strain'] is None or len(species['Strain']) < 1:
                 continue
             if species['RefSeq FTP'] is None or len(species['RefSeq FTP']) < 1:
+                if species['GenBank FTP'] is None or len(species['GenBank FTP']) < 1:
+                    continue
                 species['RefSeq FTP'] = species['GenBank FTP']
 
             accession = species['RefSeq FTP'].split('/')[-1]
