@@ -26,6 +26,7 @@ def parse_size(stats_file: str) -> int:
 @click.command()
 @click.argument('assembly_file', type=click.File('r'))
 @click.argument('species_name', type=str)
+@click.option('--seqtype', '-t', type=click.Choice(['protein', 'nucleotide']), default='protein')
 @click.option('--skip-statistics', default=False, is_flag=True,
               help='Download files without writing an index file. Use with --skip-renaming to download raw files only.')
 @click.option('--skip-renaming', default=False, is_flag=True,
@@ -40,6 +41,7 @@ def parse_size(stats_file: str) -> int:
               help='The engine to use to fetch the assemblies. Defaults to http.')
 def fetch_prots(assembly_file: FileIO,
                 species_name: str,
+                seqtype: str,
                 skip_statistics: bool,
                 skip_renaming: bool,
                 output_dir: str | None,
@@ -66,6 +68,8 @@ def fetch_prots(assembly_file: FileIO,
         mkdir(output_dir)
 
     index = [['Species name', 'Strain', 'Accession no', 'GC Content (%)', 'Genome Length (mb)']]
+    genome_type = 'genomic' if seqtype == 'nucleotide' else 'protein'
+    extension = 'fna' if seqtype == 'nucleotide' else 'faa'
     with click.progressbar(assemblies, label='In Progress', show_pos=True) as assemblies_bar:
         for species in assemblies_bar:
             if species['Strain'] is None or len(species['Strain']) < 1:
@@ -78,7 +82,7 @@ def fetch_prots(assembly_file: FileIO,
             accession = species['RefSeq FTP'].split('/')[-1]
             try:
                 sequence = driver.download_gz(
-                    driver.format_url(species['RefSeq FTP'], f'{accession}_protein.faa.gz')
+                    driver.format_url(species['RefSeq FTP'], f'{accession}_{genome_type}.{extension}.gz')
                 )
 
                 if not skip_statistics:
@@ -98,7 +102,7 @@ def fetch_prots(assembly_file: FileIO,
             sanitized = name.translate(
                 str.maketrans({"\0": "", "\\": "_", "/": "_"})
             )
-            with open(f'{output_dir}/{sanitized}.faa', 'w') as f:
+            with open(f'{output_dir}/{sanitized}.{extension}', 'w') as f:
                 f.write(sequence)
 
     if not skip_statistics:
