@@ -47,7 +47,7 @@ def fetch_prots(assembly_file: FileIO,
                 stop_at: int | None,
                 engine: str) -> None:
     """
-    Fetches the protein sequences for a given species from the NCBI.
+    Fetches the protein sequences for a given group from the NCBI based on a CSV input.
 
     assembly_file: A CSV file from NCBI listing the assemblies to fetch.
     species_name: The species name to be used for all naming and the default name of the output folder.
