@@ -29,14 +29,24 @@ def bulk_query(
     session = login(username, password)
     result = [['File Name', 'Identification(s)', 'Number of CSIs', 'Raw Results']]
     try:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-            with click.progressbar(genomes, label='In Progress', show_pos=True) as genomes_bar:
-                executor.map(run_singular, genomes_bar, repeat(input_dir), repeat(output_dir), repeat(session), repeat(result))
+        # with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        with click.progressbar(genomes, label='In Progress', show_pos=True) as progress_bar:
+            print("woot woot")
+            for genome in progress_bar:
+                run_singular(genome, input_dir, output_dir, session, result)
+                    # executor.submit(run_singular, genome, input_dir, output_dir, session, result)
+                    # task = executor.submit(run_singular, genome, input_dir, output_dir, session, result)
+                    # def cb():
+                    #     progress_bar.update(1)
+                    #     print("done 1")
+                    # task.add_done_callback(cb)
+                # executor.shutdown(wait=True)
+
         print('done')
-    except:
-        click.secho('Error occurred. Please check your input files.', fg='red')
+    # except Exception:
+    #     click.secho('Error occurred. Please check your input files.', fg='red')
     finally:
-        if outfile is None:
+        if outfile is None or len(outfile) < 2:
             outfile = f"Results {input_dir}.csv"
         # todo: add appending to existing results
         with open(path.join(output_dir, outfile), 'w') as f:

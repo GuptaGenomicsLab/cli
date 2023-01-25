@@ -77,9 +77,11 @@ def await_query(query_id: str, session: Session) -> None:
 
     client = SSEClient(res)
     for msg in client.events():
+        print(msg.data)
         if 'Completed' in msg.data:
             client.close()
-            return
+            break
+    res.close()
 
 
 def fetch_results(query_id: str, session: Session):
