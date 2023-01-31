@@ -5,15 +5,16 @@ on:
     branches: [master]
 
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-  - uses: actions/checkout@v2
-  - name: Package Application
-    uses: JackMcKew/pyinstaller-action-windows@main
-    with:
-      spec: gui.spec
-      output: dist
-  - uses: actions/upload-artifact@v2
-    with:
-      name: gupta-cli-gui
-      path: dist
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Package Application
+      uses: JackMcKew/pyinstaller-action-windows@main
+      with:
+        path: .
+        spec: gui.spec
+    - uses: actions/upload-artifact@v2
+      with:
+        name: gupta-cli-gui
+        path: dist

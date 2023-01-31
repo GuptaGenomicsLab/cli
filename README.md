@@ -19,7 +19,7 @@ Running the GUI should be self explanatory.
 
 
 ## Installation
-### Installation -- Packaged Executable
+### Installation -- Packaged Executable (GUI only, CLI work in progress)
 This tool is packaged automatically on GitHub Actions and uploaded to the releases page.
 If you wish to have a portable, standalone executable, download the latest release from the page.
 This is generally untested, and should only work on Windows -- it may have unexpected behaviours due to the nature of packaging Python executables.
