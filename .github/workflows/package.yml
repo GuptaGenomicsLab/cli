@@ -17,4 +17,12 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: gupta-cli-gui
-        path: dist
+        path: dist/windows
+    - uses: actions/create-release@v1
+      with:
+        draft: false
+        prerelease: false
+        release_name: ${{ github.ref }}
+        tag_name: ${{ github.ref }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}

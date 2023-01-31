@@ -55,7 +55,7 @@ def gui():
         if skip_renaming.get():
             command += " --skip-renaming"
         if output_dir.get():
-            command += f" -o {output_dir.get()}"
+            command += f" -o \"{output_dir.get()}\""
         if start_at.get() != 0:
             command += f" --start-at {start_at.get()}"
         if stop_at.get() is not None and stop_at.get() != 0:
