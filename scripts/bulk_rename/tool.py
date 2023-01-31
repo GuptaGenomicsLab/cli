@@ -42,7 +42,7 @@ def parse_index(index_file: str) -> dict[str, str]:
     genomes = {}
     with open(index_file, 'r') as f:
         for line in f.readlines():
-            name, *tail = line.strip().split(' ')
+            name, *tail = re.split(r'[ \t]', line, maxsplit=1)
             genomes[name] = ' '.join(tail)
     print(genomes)
     return genomes

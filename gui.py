@@ -1,8 +1,15 @@
 #! /usr/bin/env python
 import tkinter as tk
+import os
+
+# set pwd to the directory of this script
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 from scripts.fetch_prots.gui import gui as fetchprots_gui
 from scripts.bulk_rename.gui import gui as bulkrename_gui
+
 
 window = tk.Tk()
 window.title("Gupta Lab Tools (GUI)")

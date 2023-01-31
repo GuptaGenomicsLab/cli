@@ -22,6 +22,9 @@ gtools.add_command(downloader)
 gtools.add_command(bulk_query)
 gtools.add_command(single_query)
 
-if __name__ == '__main__':
+def main():
     gtools()
     appindels()
+
+if __name__ == '__main__':
+    main()
