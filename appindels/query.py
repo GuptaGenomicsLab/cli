@@ -62,7 +62,7 @@ def start_query(
     res = session.post(
         f'{BASE_URL}/blast/start-query',
         files=dict(file=genome),
-        data=dict(description=description, sequenceType='Auto')
+        data=dict(description=description, sequenceType='Nucleotide')
     )
 
     query_id = res.content.decode('utf-8')

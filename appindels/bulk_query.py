@@ -31,7 +31,6 @@ def bulk_query(
     try:
         # with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         with click.progressbar(genomes, label='In Progress', show_pos=True) as progress_bar:
-            print("woot woot")
             for genome in progress_bar:
                 run_singular(genome, input_dir, output_dir, session, result)
                     # executor.submit(run_singular, genome, input_dir, output_dir, session, result)
@@ -47,7 +46,7 @@ def bulk_query(
     #     click.secho('Error occurred. Please check your input files.', fg='red')
     finally:
         if outfile is None or len(outfile) < 2:
-            outfile = f"Results {input_dir}.csv"
+            outfile = f"Summary.csv"
         # todo: add appending to existing results
         with open(path.join(output_dir, outfile), 'w') as f:
             csv.writer(f).writerows(result)

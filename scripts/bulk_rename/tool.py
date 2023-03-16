@@ -18,8 +18,9 @@ def bulk_rename(input_dir: str, output_dir: str, index_file: str, fmt: str = 'ke
 
         accession = fname.split('_ASM')[0]
         name = genomes.get(accession)
+        line_ending = '\r\n' if os.name == 'nt' else '\n'
         if name:
-            sequence = re.sub(r'\[.+]\n', f'[{name}]\n', sequence)
+            sequence = re.sub(re.compile('\[.+\]' + line_ending), f'[{name}]{line_ending}', sequence)
         else:
             failures.append(accession)
 
@@ -27,15 +28,16 @@ def bulk_rename(input_dir: str, output_dir: str, index_file: str, fmt: str = 'ke
             fname = fname.split('.')[:-1] + '.txt'
         elif fmt == 'fasta':
             fname = fname.split('.')[:-1] + '.fasta'
-            
+
         with open(os.path.join(output_dir, fname), 'w') as f:
             f.write(sequence)
-    
+
     print('Done.')
     if len(failures) > 0:
         print('Failed to rename:')
-        print(failures.join('\n'))
+        print('\n'.join(failures))
         return failures
+    return []
 
 
 def parse_index(index_file: str) -> dict[str, str]:
@@ -46,7 +48,7 @@ def parse_index(index_file: str) -> dict[str, str]:
             genomes[name] = ' '.join(tail)
     print(genomes)
     return genomes
-            
+
 
 if __name__ == '__main__':
     bulk_rename(
